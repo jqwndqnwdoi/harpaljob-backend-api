@@ -24,7 +24,13 @@ export const TinyEditor = ({ value, onChange, placeholder = "Enter description..
           // Premium features
           'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
         ],
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        toolbar: [
+          'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough',
+          'link image media table mergetags | align lineheight',
+          'checklist numlist bullist indent outdent | emoticons charmap',
+          'addcomment showcomments | spellcheckdialog a11ycheck typography | removeformat'
+        ],
+        toolbar_mode: 'sliding',
         placeholder,
         content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; font-size: 14px }',
         branding: false,
@@ -37,6 +43,7 @@ export const TinyEditor = ({ value, onChange, placeholder = "Enter description..
         ai_request: (request: any, respondWith: any) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
         // Image configuration to allow URL source
         image_title: true,
+        image_description: false,
         automatic_uploads: true,
         file_picker_types: 'image',
         file_picker_callback: (cb: any, value: any, meta: any) => {
@@ -72,7 +79,16 @@ export const TinyEditor = ({ value, onChange, placeholder = "Enter description..
             success(reader.result);
           };
           reader.readAsDataURL(blobInfo.blob());
-        }
+        },
+        // Ensure proper initialization
+        setup: (editor: any) => {
+          editor.on('init', () => {
+            console.log('TinyMCE editor initialized successfully');
+          });
+        },
+        // Fix for premium features
+        promotion: false,
+        license_key: 'gpl'
       }}
     />
   );
